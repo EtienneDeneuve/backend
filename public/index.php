@@ -48,6 +48,14 @@ if (strstr($_SERVER['REQUEST_URI'], 'index.php')) {
    $uri_spl = explode('index.php', $_SERVER['REQUEST_URI']);
    $prefix = $uri_spl[0]."index.php";
 }
+if (strstr($_SERVER['REQUEST_URI'], '/v1/')) {
+   $uri_spl = explode('/v1/', $_SERVER['REQUEST_URI']);
+   $prefix = $uri_spl[0];
+}
+if (strstr($_SERVER['REQUEST_URI'], '/ping')) {
+   $uri_spl = explode('/ping', $_SERVER['REQUEST_URI']);
+   $prefix = $uri_spl[0];
+}
 
 $app->add(new Tuupola\Middleware\JwtAuthentication([
    "ignore" => [$prefix."/v1/token", $prefix."/ping", $prefix."/v1/fusioninventory", $prefix."/v1/status"],
