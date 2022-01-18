@@ -64,7 +64,8 @@ jobs:
     - name: copy nginx config file
       run: |
         sed -i 's/php7.4-fpm/php${{ matrix.php-versions }}-fpm/g' tests/RESTAPI/fusionsuite.conf
-        sudo cp tests/RESTAPI/fusionsuite.conf /etc/nginx/sites-available/fusionsuite.conf
+        sudo cp tests/RESTAPI/fusionsuite.conf /etc/nginx/sites-enabled/fusionsuite.conf
+        sudo rm /etc/nginx/sites-enabled/default
 
     - name: start nginx
       run: sudo systemctl start nginx
