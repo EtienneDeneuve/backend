@@ -82,6 +82,11 @@ jobs:
         cd tests/RESTAPI/
         yarn install
 
+    - name: paths
+      run: |
+        pwd
+        ls -l
+
     - name: run REST API tests
       run: |
         cd tests/RESTAPI/
