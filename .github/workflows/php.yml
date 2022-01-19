@@ -70,6 +70,13 @@ jobs:
     - name: start nginx
       run: sudo systemctl start nginx
 
+    - name: start mysql
+      run: |
+        sudo /etc/init.d/mysql start
+
+    - name: install the backend
+      run: ./vendor/bin/phinx migrate
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
