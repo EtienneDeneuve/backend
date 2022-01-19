@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: '16.x'
-  DB_DATABASE: fusionsuite
+  DB_DATABASE: fusionsuite_dev
   DB_USER: root
   DB_PASSWORD: root
 
