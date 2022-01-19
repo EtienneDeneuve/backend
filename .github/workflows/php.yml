@@ -80,7 +80,7 @@ jobs:
 
     - name: install the backend
       run: |
-        sed -i "s/''/'root'" phinx.php
+        sed -i 's/\'\'/\'root\'' phinx.php
         ./vendor/bin/phinx migrate
 
     - name: Set up Node.js
