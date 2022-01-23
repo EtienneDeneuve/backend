@@ -17,15 +17,19 @@ describe('Endpoint /v1/cmdb/types', function() {
     .set('Authorization', 'Bearer ' + global.token)
     .expect(200)
     .expect('Content-Type', /json/)
-    .then(response => {
+    .expect(function(response) {
       assert(is.propertyCount(response.body, 1));
 
       assert(is.integer(response.body.id));
       assert(validator.matches('' + response.body.id, /^\d+$/));
       global.id = response.body.id;
-      done();
     })
-    .catch(err => done(err));
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
   it('create a new type, but exists => error', function(done) {
@@ -34,7 +38,13 @@ describe('Endpoint /v1/cmdb/types', function() {
     .send({name: 'Firewall'})
     .set('Accept', 'application/json')
     .set('Authorization', 'Bearer ' + global.token)
-    .expect(409, done);
+    .expect(409)
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
   it('create a new type, but forget name => error', function(done) {
@@ -45,13 +55,17 @@ describe('Endpoint /v1/cmdb/types', function() {
     .set('Authorization', 'Bearer ' + global.token)
     .expect(400)
     .expect('Content-Type', /json/)
-    .then(response => {
+    .expect(function(response) {
       assert(is.propertyCount(response.body, 2));
       assert(validator.equals(response.body.status, 'error'));
       assert(validator.equals(response.body.message, 'The Name is required'));
-      done();
     })
-    .catch(err => done(err));
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
   it('create a new type, but name not in right type => error', function(done) {
@@ -62,13 +76,17 @@ describe('Endpoint /v1/cmdb/types', function() {
     .set('Authorization', 'Bearer ' + global.token)
     .expect(400)
     .expect('Content-Type', /json/)
-    .then(response => {
+    .expect(function(response) {
       assert(is.propertyCount(response.body, 2));
       assert(validator.equals(response.body.status, 'error'));
       assert(validator.equals(response.body.message, 'The Name is not valid type'));
-      done();
     })
-    .catch(err => done(err));
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 });
 

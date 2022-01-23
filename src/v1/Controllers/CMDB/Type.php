@@ -69,10 +69,9 @@ final class Type
    * @apiSuccess {String}       name                  The name of the item.
    * @apiSuccess {String}       created_at            Date of the item creation.
    * @apiSuccess {String|null}  updated_at            Date of the last item modification.
-   * @apiSuccess {Object[]}     properties              The properties list.
-   * @apiSuccess {Integer}      properties.id           The property id.
+   * @apiSuccess {Object[]}     properties            The properties list.
+   * @apiSuccess {Integer}      properties.id         The property id.
    * 
-   *
    * @apiSuccessExample {json} Success-Response:
    * HTTP/1.1 200 OK
    * {
@@ -203,6 +202,23 @@ final class Type
     return $response->withHeader('Content-Type', 'application/json');
   }
 
+  /**
+   * @api {delete} /v1/cmdb/type/:id delete a type of items
+   * @apiName PatchCMDBTypes
+   * @apiGroup CMDBTypes
+   * @apiVersion 1.0.0-draft
+   * @apiDescription The first delete request will do a soft delete. The second delete request will permanently delete the item
+   *
+   * @apiUse AutorizationHeader
+   *
+   * @apiParam {Number}    id        Unique ID of the type.
+   *
+   * @apiSuccessExample {json} Success-Response:
+   * HTTP/1.1 200 OK
+   * [
+   * ]
+   * 
+   */
   public function deleteItem(Request $request, Response $response, $args): Response
   {
     $token = $request->getAttribute('token');

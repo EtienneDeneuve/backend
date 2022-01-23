@@ -16,7 +16,13 @@ describe('Delete /v1/cmdb/types/:id', function() {
     .set('Accept', 'application/json')
     .set('Authorization', 'Bearer ' + global.token)
     .expect('Content-Type', /json/)
-    .expect(200, done)
+    .expect(200)
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
   it('permanently delete the Firewall type', function(done) {
@@ -25,8 +31,13 @@ describe('Delete /v1/cmdb/types/:id', function() {
     .set('Accept', 'application/json')
     .set('Authorization', 'Bearer ' + global.token)
     .expect('Content-Type', /json/)
-    .expect(200, done)
+    .expect(200)
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
 });
-

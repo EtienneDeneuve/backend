@@ -18,11 +18,15 @@ describe('Update /v1/cmdb/types/:id', function() {
     .set('Authorization', 'Bearer ' + global.token)
     .expect(200)
     .expect('Content-Type', /json/)
-    .then(response => {
+    .expect(function(response) {
       assert(is.propertyCount(response.body, 0));
-      done();
     })
-    .catch(err => done(err));
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
   it('update the Firewall type, but forget name => error', function(done) {
@@ -33,13 +37,17 @@ describe('Update /v1/cmdb/types/:id', function() {
     .set('Authorization', 'Bearer ' + global.token)
     .expect(400)
     .expect('Content-Type', /json/)
-    .then(response => {
+    .expect(function(response) {
       assert(is.propertyCount(response.body, 2));
       assert(validator.equals(response.body.status, 'error'));
       assert(validator.equals(response.body.message, 'The Name is required'));
-      done();
     })
-    .catch(err => done(err));
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
   it('update the Firewall type, but name not in right type => error', function(done) {
@@ -50,13 +58,17 @@ describe('Update /v1/cmdb/types/:id', function() {
     .set('Authorization', 'Bearer ' + global.token)
     .expect(400)
     .expect('Content-Type', /json/)
-    .then(response => {
+    .expect(function(response) {
       assert(is.propertyCount(response.body, 2));
       assert(validator.equals(response.body.status, 'error'));
       assert(validator.equals(response.body.message, 'The Name is not valid type'));
-      done();
     })
-    .catch(err => done(err));
+    .end(function(err, response) {
+      if (err) {
+        return done(err + ' | Response: ' + response.text);
+      }
+      return done();
+    });
   });
 
 });

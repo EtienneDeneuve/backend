@@ -121,7 +121,7 @@ final class Item
 
 
   /**
-   * @api {post} /v1/cmdb/items/:typeid/items Create a new items
+   * @api {post} /v1/cmdb/types/:typeid/items Create a new item
    * @apiName PostCMDBItems
    * @apiGroup CMDBItems
    * @apiVersion 1.0.0-draft
@@ -151,18 +151,44 @@ final class Item
    *     }
    *   ]
    * } 
+   * 
+   * @apiSuccessExample {json} Success-Response:
+   * HTTP/1.1 200 OK
+   * {
+   *   "id":10
+   * }
+   * 
+   * @apiErrorExample {json} Error-Response:
+   * HTTP/1.1 400 Bad Request
+   * {
+   *   "status: "error",
+   *   "message": "The Name is required"
+   * }
+   * 
    */
   public function postItem(Request $request, Response $response, $args): Response
   {
     $token = $request->getAttribute('token');
 
     $data = json_decode($request->getBody());
-    if (\App\v1\Post::PostHasProperties($data, ['name', 'properties']) === false)
-    {
-      throw new \Exception('Post data not conform (missing fields), check the documentation', 400);
-    }
 
-    // TODO verifications
+    // Validate the data format
+    $dataFormat = [
+      'name' => 'required'
+    ];
+    \App\v1\Common::validateData($data, $dataFormat);
+    // validate for each properties
+    if (property_exists($data, 'properties'))
+    {
+      foreach ($data->properties as $property)
+      {
+        $dataFormat = [
+          'property_id' => 'required|integer|min:1',
+          'value'       => 'required'
+        ];
+        \App\v1\Common::validateData($property, $dataFormat);
+      }
+    }
 
 
     // TODO run rules for rewrite value
@@ -177,13 +203,13 @@ final class Item
     $item->state_id = 0;
     $item->save();
 
-    foreach ($data->properties as $property)
+    if (property_exists($data, 'properties'))
     {
-      $item->properties()->attach($property->property_id, ['value' => $property->value]);
+      foreach ($data->properties as $property)
+      {
+        $item->properties()->attach($property->property_id, ['value' => $property->value]);
+      }
     }
-
-
-    
 
     $response->getBody()->write(json_encode(["id" => intval($item->id)]));
     return $response->withHeader('Content-Type', 'application/json');
