@@ -27,7 +27,7 @@ final class Item
   use \App\v1\Read;
 
   /**
-   * @api {get} /v1/cmdb/items/:type Get all items of CMDB with type defined
+   * @api {get} /v1/cmdb/types/:typeid/items Get all items of CMDB with type defined
    * @apiName GetCMDBItems
    * @apiGroup CMDBItems
    * @apiVersion 1.0.0-draft
@@ -36,23 +36,6 @@ final class Item
    *     
    * @apiSuccess {Integer}  id      The id of the item.
    * @apiSuccess {String}   name    The name of the item.
-
-  `type_id` int(11) NOT NULL,
-
-
-   * @apiSuccess {Object|null}  user                          The user information have created the ticket.
-   * @apiSuccess {Integer}        user.id                    id of the user.
-   * @apiSuccess {String}         user.login                 Login of the user.
-   * @apiSuccess {String|null}    user.firstname             Firstname of the user.
-   * @apiSuccess {String|null}    user.lastname              Lastname of the user.
-   * @apiSuccess {String[]}       user.displayname           User displayname.
-   * // TODO `owner_group_id`
-   * // TODO  `state_id`
-   * @apiSuccess {String}       created_at                    Date of the item creation.
-   * @apiSuccess {String|null}  updated_at                    Date of the last item modification.
-   * @apiSuccess {Object[]}     properties                    properties of the item
-   * @apiSuccess {String}         properties.name             property name
-   * @apiSuccess {String}         properties.value            property value
    * 
    * @apiSuccessExample {json} Success-Response:
    * HTTP/1.1 200 OK
@@ -60,21 +43,35 @@ final class Item
    *   {
    *     "id": 45,
    *     "name": "LP-000345",
-   *     "user: null,
    *     "created_at": "2020-07-20 14:30:45",
    *     "updated_at": null,
    *     "properties": [
    *       {
+   *         "id": 3,
    *         "name": "Serial number",
-   *         "value": "gt43bf87d23d"
+   *         "valuetype": "string",
+   *         "unit": null,
+   *         "listvalues": [],
+   *         "value": "gt43bf87d23d",
+   *         "byfusioninventory": true
    *       },
    *       {
+   *         "id": 4,
    *         "name": "Model",
-   *         "value": "Latitude E7470"
+   *         "valuetype": "string",
+   *         "unit": null,
+   *         "listvalues": [],
+   *         "value": "Latitude E7470",
+   *         "byfusioninventory": true
    *       },
    *       {
+   *         "id": 5,
    *         "name": "Manufacturer",
-   *         "value": "Dell"
+   *         "valuetype": "string",
+   *         "unit": null,
+   *         "listvalues": [],
+   *         "value": "Dell",
+   *         "byfusioninventory": true
    *       }
    *     ]
    *   }

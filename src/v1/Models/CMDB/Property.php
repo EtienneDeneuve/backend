@@ -60,9 +60,9 @@ class Property extends Model
   public function getByfusioninventoryAttribute()
   {
     if (isset($this->pivot->byfusioninventory)) {
-      return $this->pivot->byfusioninventory;
+      return boolval($this->pivot->byfusioninventory);
     }
-    return 0;
+    return false;
   }
 
   public function listvalues()
